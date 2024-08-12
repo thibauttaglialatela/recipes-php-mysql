@@ -11,7 +11,7 @@
 
 <body class="d-flex flex-column min-vh-100">
 <div class="container">
-    <?php require_once(__DIR__ . '/header.php'); ?>
+    <?php require_once(__DIR__ . '/_header.php'); ?>
     <h1>Contactez nous</h1>
     <form action="_submit_contact.php" method="post" enctype="multipart/form-data">
         <div class="mb-3">
@@ -31,7 +31,7 @@
     </form>
     <br />
 </div>
-<?php require_once(__DIR__ . '/footer.php'); ?>
+<?php require_once(__DIR__ . '/_footer.php'); ?>
 </body>
 
 

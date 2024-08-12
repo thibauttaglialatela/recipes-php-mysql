@@ -34,7 +34,7 @@ if (isset($_FILES['screenshot']) && $_FILES['screenshot']['error'] == 0) {
 </head>
 <body class="d-flex flex-column min-vh-100">
 <div class="container">
-    <?php require_once(__DIR__ . '/header.php'); ?>
+    <?php require_once(__DIR__ . '/_header.php'); ?>
     <h1>Message bien reçu !</h1>
 
     <div class="card">
@@ -57,7 +57,7 @@ if (isset($_FILES['screenshot']) && $_FILES['screenshot']['error'] == 0) {
         </div>
     </div>
 </div>
-<?php require_once(__DIR__ . '/footer.php'); ?>
+<?php require_once(__DIR__ . '/_footer.php'); ?>
 </body>
 
 

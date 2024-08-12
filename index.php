@@ -19,7 +19,7 @@ require_once(__DIR__ . '/functions.php');
 <body class="d-flex flex-column min-vh-100">
 <main class="container">
     <!-- inclusion de l'entête du site -->
-    <?php require_once(__DIR__ . '/header.php'); ?>
+    <?php require_once(__DIR__ . '/_header.php'); ?>
     <h1 class="text-center">Bienvenu sur notre site de recettes de cuisine.</h1>
     <?php if (!isset($_SESSION['email'])): ?>
         <?php require_once(__DIR__ . '/_login.php'); ?>
@@ -42,7 +42,7 @@ require_once(__DIR__ . '/functions.php');
 
 </main>
 <!-- inclusion du bas de page du site -->
-<?php require_once(__DIR__ . '/footer.php'); ?>
+<?php require_once(__DIR__ . '/_footer.php'); ?>
 </body>
 
 

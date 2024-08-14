@@ -19,8 +19,8 @@
             </form>
         </article>
     </section>
-<?php /*else: */?><!--
+<?php else: ?>
 <div>
-    <p>Bon retour parmi nous <?php /*= $_SESSION['email'] */?></p>
-</div>-->
+    <p>Bon retour parmi nous <?= $_SESSION['email'] ?></p>
+</div>
 <?php endif; ?>

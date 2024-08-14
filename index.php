@@ -44,6 +44,4 @@ require_once(__DIR__ . '/functions.php');
 <!-- inclusion du bas de page du site -->
 <?php require_once(__DIR__ . '/_footer.php'); ?>
 </body>
-
-
 </html>

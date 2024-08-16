@@ -12,6 +12,14 @@
                 <li class="nav-item">
                     <a class="nav-link" href="contact.php">Contact</a>
                 </li>
+                <?php if (isset($_SESSION['email'])): ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="add_recipe.php">Ajouter une recette</a>
+                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="_logout.php">Se déconnecter</a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

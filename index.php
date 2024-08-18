@@ -35,6 +35,34 @@ require_once(__DIR__ . '/functions.php');
                 <h3><?php echo $recipe['title']; ?></h3>
                 <div><?php echo $recipe['recipe']; ?></div>
                 <i><?php echo displayAuthor($recipe['author'], $users); ?></i>
+                <?php if (isset($_SESSION['email'])): ?>
+                <div class="d-flex justify-content-around">
+                    <p><a href="#" class="link-warning link-offset-2">Modifier</a></p>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRecipeModal<?= $recipe['recipe_id'] ?>">
+                        Supprimer
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="deleteRecipeModal<?= $recipe['recipe_id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Etes-vous certain(e) de vouloir supprimer cette recette ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Non</button>
+                                    <form action='delete_recipe.php' method="post">
+                                        <input type="hidden" name="recipe_id" value="<?= $recipe['recipe_id']; ?>">
+                                        <button type="submit" class="btn btn-danger">Oui</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
             </article>
         <?php endforeach ?>
         </article>

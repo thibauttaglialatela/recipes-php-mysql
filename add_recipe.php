@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once ('connect.php');
-//valider les données du formulaire
+require_once('connect.php');
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $recipeTitle = $_POST["recipeTitle"];
     $recipeContent = $_POST["recipeContent"];
@@ -16,29 +16,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($recipeTitle)) {
         $errors['recipeTitle'] = "La recette doit comporter un titre";
-    } elseif (strlen($recipeContent) > 128 || strlen($recipeContent) < 2 ) {
-        $errors['recipeTitle'] = "Le titre doit faire entre 2 et 128 caracteres";
+    } elseif (strlen($recipeTitle) > 128 || strlen($recipeTitle) < 2) {
+        $errors['recipeTitle'] = "Le titre doit faire entre 2 et 128 caractères";
     }
 
     if (empty($recipeContent)) {
         $errors['recipeContent'] = "La recette doit comporter un texte";
     } elseif (strlen($recipeContent) < 20) {
-        $errors['recipeContent'] = "La recette doit faire un minimum de 20 caractéres";
+        $errors['recipeContent'] = "La recette doit faire un minimum de 20 caractères";
     }
 
     if (empty($errors)) {
-        $sqlInsert = "INSERT INTO `recipes` (`title` , `recipe`, `author`, `is_enabled`) VALUES (:recipeTitle, :recipeContent, :recipeAuthor, 0);')";
+        try {
+            $sqlInsert = "INSERT INTO `recipes` (`title`, `recipe`, `author`, `is_enabled`) VALUES (:recipeTitle, :recipeContent, :recipeAuthor, 1);";
+            $stmtInsert = $pdo->prepare($sqlInsert);
+            $stmtInsert->bindValue(':recipeTitle', $recipeTitle, PDO::PARAM_STR);
+            $stmtInsert->bindValue(':recipeContent', $recipeContent, PDO::PARAM_STR);
+            $stmtInsert->bindValue(':recipeAuthor', $_SESSION['email'], PDO::PARAM_STR);
 
-        $stmtInsert = $pdo->prepare($sqlInsert);
-        $stmtInsert->bindValue(':recipeTitle', $recipeTitle, PDO::PARAM_STR);
-        $stmtInsert->bindValue(':recipeContent', $recipeContent, PDO::PARAM_STR);
-        $stmtInsert->bindValue(':recipeAuthor', $_SESSION['email'], PDO::PARAM_STR);
-
-        $stmtInsert->execute();
+            if ($stmtInsert->execute()) {
+                // Redirection vers la page index.php en cas de succès
+                header("Location: index.php");
+                exit();
+            } else {
+                echo "Erreur : La recette n'a pas pu être ajoutée.";
+            }
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'insertion : " . $e->getMessage();
+        }
+    } else {
+        foreach ($errors as $error) {
+            echo "<p style='color: red;'>$error</p>";
+        }
     }
-
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

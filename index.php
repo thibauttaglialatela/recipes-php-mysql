@@ -35,9 +35,9 @@ require_once(__DIR__ . '/functions.php');
                 <h3><?php echo $recipe['title']; ?></h3>
                 <div><?php echo $recipe['recipe']; ?></div>
                 <i><?php echo displayAuthor($recipe['author'], $users); ?></i>
-                <?php if (isset($_SESSION['email'])): ?>
+                <?php if (isset($_SESSION['email']) && $_SESSION['email'] === $recipe['author']): ?>
                 <div class="d-flex justify-content-around">
-                    <p><a href="#" class="link-warning link-offset-2">Modifier</a></p>
+                    <a href="update_recipe.php?id=<?= $recipe['recipe_id'] ?>" class="btn btn-warning">Modifier</a>
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRecipeModal<?= $recipe['recipe_id'] ?>">
                         Supprimer
                     </button>
@@ -53,10 +53,16 @@ require_once(__DIR__ . '/functions.php');
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-success" data-bs-dismiss="modal">Non</button>
+                                    <?php if ($_SESSION['email'] === $recipe['author']): ?>
                                     <form action='delete_recipe.php' method="post">
                                         <input type="hidden" name="recipe_id" value="<?= $recipe['recipe_id']; ?>">
                                         <button type="submit" class="btn btn-danger">Oui</button>
                                     </form>
+                                    <?php else: ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        Seul l'auteur de la recette ou un administrateur peut la supprimer.
+                                    </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>

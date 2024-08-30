@@ -50,7 +50,7 @@ if (isset($_POST) && !empty($_POST)) {
                 echo 'La recette n\' a pas pu être mise à jour';
             }
         } catch (PDOException $exception) {
-            echo sprintf('Erreur lors de la modification : %s', $exception->getMessage());
+            $errorMessage = sprintf('Erreur : %s', $exception->getMessage());
         }
 
     } else {
@@ -60,12 +60,22 @@ if (isset($_POST) && !empty($_POST)) {
     }
 } elseif (isset($_GET['id']) && !empty($_GET['id'])) {
     //chercher dans la base la recette correspondante à cet id
-    $id = $_GET['id'];
-    $sql = "SELECT * FROM `recipes` WHERE `recipe_id` = :id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-    $stmt->execute();
-    $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
+    try {
+        $id = $_GET['id'];
+        $sql = "SELECT * FROM `recipes` WHERE `recipe_id` = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        if (!$stmt->execute()) {
+            throw new PDOException('Erreur lors de l\'exécution de la requête.');
+        }
+
+        $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$recipe) {
+            throw new PDOException('La recette n\'existe pas.');
+        }
+    } catch (PDOException $exception) {
+        $errorMessage = sprintf('Erreur : %s', $exception->getMessage());
+    }
 }
 
 ?>
@@ -79,13 +89,15 @@ if (isset($_POST) && !empty($_POST)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-
 <body class="d-flex flex-column min-vh-100">
 <div class="container">
     <?php require_once(__DIR__ . '/_header.php'); ?>
     <h1>Modifier une recette</h1>
     <section class="row">
         <div class="col-lg-10">
+            <?php if (isset($errorMessage) && !empty($errorMessage)): ?>
+            <div class="alert alert-danger"><?= $errorMessage ?></div>
+            <?php else: ?>
             <form action="<?= htmlspecialchars(basename($_SERVER['REQUEST_URI'])) ?>" method="post">
                 <div class="col-lg-6">
                     <label for="recipeTitle" class="form-label">Titre de la recette</label>
@@ -113,6 +125,7 @@ if (isset($_POST) && !empty($_POST)) {
                     <a href="/index.php" class="btn btn-secondary">Annuler</a>
                 </div>
             </form>
+            <?php endif; ?>
         </div>
     </section>
 </div>

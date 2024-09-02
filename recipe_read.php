@@ -26,6 +26,17 @@ try {
     $errorMessage = $PDOException->getMessage();
 }
 
+//affichage des commentaires d'une recette
+$sql = "SELECT comments.comment, users.full_name FROM comments 
+    LEFT JOIN users ON users.user_id = comments.user_id 
+    LEFT JOIN recipes ON recipes.recipe_id = comments.recipe_id 
+    WHERE recipes.recipe_id = :recipe_id";
+
+$recipeId = $_GET['id'];
+$statement = $pdo->prepare($sql);
+$statement->bindParam(':recipe_id', $recipeId);
+$statement->execute();
+$comments = $statement->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -50,7 +61,7 @@ try {
         <h1 class="text-center"><?= $recipe['title'] ?></h1>
         <section class="row justify-content-center">
             <article class="col-lg-8">
-                <div class="card shadow rounded">
+                <div class="card shadow-lg rounded">
                     <div class="card-body">
                         <p class="card-text"><?= $recipe['recipe'] ?></p>
                     </div>
@@ -94,6 +105,24 @@ try {
                         </div>
                     </div>
                 </div>
+            </article>
+
+            <h2 class="text-center mt-2 mt-lg-4">Commentaires</h2>
+            <article class="col-lg-8">
+                <?php if (empty($comments) || !isset($comments)): ?>
+                    <div class="alert alert-info text-center">
+                        Pas de commentaires
+                    </div>
+                <?php else: ?>
+                    <div class="list-group">
+                        <?php foreach ($comments as $comment): ?>
+                            <div class="list-group-item list-group-item-action flex-column align-items-start mb-4 shadow rounded">
+                                <h5 class="mb-1"><?= htmlspecialchars($comment['full_name']) ?></h5>
+                                <p class="mb-1"><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
             </article>
         </section>
     <?php endif; ?>

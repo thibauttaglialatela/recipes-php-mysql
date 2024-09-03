@@ -1,8 +1,12 @@
 <?php
 session_start();
 require_once('connect.php');
+require_once 'functions.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (!isValidToken()) {
+        die('token is invalid');
+    }
     $recipeTitle = $_POST["recipeTitle"];
     $recipeContent = $_POST["recipeContent"];
 

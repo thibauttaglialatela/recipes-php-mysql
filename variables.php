@@ -1,5 +1,6 @@
 <?php
 require_once ('connect.php');
+
 $userStatement = $pdo->prepare("SELECT * FROM users");
 $userStatement->execute();
 $users = $userStatement->fetchAll();

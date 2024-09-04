@@ -27,10 +27,11 @@ try {
 }
 
 //affichage des commentaires d'une recette
-$sql = "SELECT comments.comment, users.full_name FROM comments 
+$sql = "SELECT comments.comment, users.full_name, DATE_FORMAT(comments.created_at, '%d/%m/%Y à %H:%i') AS date FROM comments
     LEFT JOIN users ON users.user_id = comments.user_id 
     LEFT JOIN recipes ON recipes.recipe_id = comments.recipe_id 
-    WHERE recipes.recipe_id = :recipe_id";
+    WHERE recipes.recipe_id = :recipe_id
+    ORDER BY date DESC";
 
 $recipeId = $_GET['id'];
 $statement = $pdo->prepare($sql);
@@ -116,8 +117,9 @@ $comments = $statement->fetchAll(PDO::FETCH_ASSOC);
                     <div class="list-group">
                         <?php foreach ($comments as $comment): ?>
                             <div class="list-group-item list-group-item-action flex-column align-items-start mb-4 shadow rounded">
-                                <h5 class="mb-1"><?= htmlspecialchars($comment['full_name']) ?></h5>
+                                <h5 class="mb-1">Publié par <?= htmlspecialchars($comment['full_name']) ?></h5>
                                 <p class="mb-1"><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
+                                <h6 class="mb-1">Publié le <?= $comment['date'] ?></h6>
                             </div>
                         <?php endforeach; ?>
                     </div>

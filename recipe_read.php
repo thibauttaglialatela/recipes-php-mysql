@@ -41,7 +41,6 @@ $comments = $statement->fetchAll(PDO::FETCH_ASSOC);
 <!DOCTYPE html>
 <html lang="fr">
 
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -124,6 +123,9 @@ $comments = $statement->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 <?php endif; ?>
             </article>
+            <?php if (isset($_SESSION['email'])): ?>
+            <?php include_once __DIR__ . '/_comment_form.php' ?>
+            <?php endif; ?>
         </section>
     <?php endif; ?>
 

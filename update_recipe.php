@@ -44,7 +44,7 @@ if (isset($_POST) && !empty($_POST)) {
             $stmtUpdate->bindValue(':id', $id, PDO::PARAM_INT);
 
             if ($stmtUpdate->execute()) {
-                header('Location: index.php');
+                header('Location: recipe_read.php?id=' . $_GET['id']);
                 exit();
             } else {
                 echo 'La recette n\' a pas pu être mise à jour';

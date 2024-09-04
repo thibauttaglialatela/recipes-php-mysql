@@ -28,3 +28,11 @@ function redirectToUrl(string $url): never
     header('Location: ' . $url);
     exit();
 }
+
+function isValidToken(): bool
+{
+    if (!isset($_SESSION['csrf_token']) || $_SESSION['csrf_token'] != $_POST['csrf_token']) {
+        return false;
+    }
+    return true;
+}

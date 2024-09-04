@@ -1,5 +1,8 @@
 <?php
 session_start();
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
 require_once ('variables.php');
 require_once ('functions.php');
@@ -11,6 +14,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         foreach ($users as $user) {
             if ($_POST['email'] === $user['email'] && $_POST['password'] === $user['password']) {
                 $_SESSION['email'] = $user['email'];
+                $_SESSION['user_id'] = $user['user_id'];
             }
         }
 

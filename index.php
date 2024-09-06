@@ -30,11 +30,12 @@ require_once(__DIR__ . '/functions.php');
     <section class="row justify-content-center">
         <article class="col-lg-6">
         <h2 class="text-center">Nos recettes</h2>
-        <?php foreach (getRecipes($recipes) as $recipe) : ?>
+        <?php foreach ($recipesWithRatings as $recipesWithRating) : ?>
             <article class="d-flex flex-column justify-content-center my-4 p-2">
-                <h3 class="text-center"><?php echo $recipe['title']; ?></h3>
-                <p class="text-center">Auteur de la recette : <?php echo displayAuthor($recipe['author'], $users); ?></p>
-                <a href="recipe_read.php?id=<?= $recipe['recipe_id'] ?>" class="btn btn-info">Découvrir</a>
+                <h3 class="text-center"><?php echo $recipesWithRating['title']; ?></h3>
+                <p class="text-center">Auteur de la recette : <?php echo displayAuthor($recipesWithRating['author'], $users); ?></p>
+                <a href="recipe_read.php?id=<?= $recipesWithRating['recipe_id'] ?>" class="btn btn-info">Découvrir</a>
+                <i class="mt-2">Moyenne des notes : <?= $recipesWithRating['rating'] ?></i>
             </article>
         <?php endforeach ?>
         </article>

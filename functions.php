@@ -12,16 +12,6 @@ function isValidRecipe(array $recipe): bool
 {
     return $recipe['is_enabled'];
 }
-function getRecipes(array $recipes) : array
-{
-    $valid_recipes = [];
-    foreach($recipes as $recipe) {
-        if (isValidRecipe($recipe)) {
-            $valid_recipes[] = $recipe;
-        }
-    }
-    return $valid_recipes;
-}
 
 function redirectToUrl(string $url): never
 {
